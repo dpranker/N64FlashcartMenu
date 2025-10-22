@@ -71,7 +71,8 @@ png_err_t png_decoder_start (char *path, int max_width, int max_height, png_call
         return PNG_ERR_NO_FILE;
     }
 
-    setbuf(decoder->f, NULL);
+    // Enable 8KB file buffering to batch SD card reads for better performance
+    setvbuf(decoder->f, NULL, _IOFBF, 8192);
 
     if ((decoder->ctx = spng_ctx_new(SPNG_CTX_IGNORE_ADLER32)) == NULL) {
         png_decoder_deinit(false);
